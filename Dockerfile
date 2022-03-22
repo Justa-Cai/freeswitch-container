@@ -3,11 +3,9 @@
 FROM ubuntu:16.04
 MAINTAINER Thomas Quintana <thomas@bettervoice.com>
 
-# Enable the Ubuntu multiverse repository.
-RUN echo "deb http://us.archive.ubuntu.com/ubuntu/ trusty multiverse" >> /etc/apt/source.list
-RUN echo "deb-src http://us.archive.ubuntu.com/ubuntu/ trusty multiverse">> /etc/apt/source.list
-RUN echo "deb http://us.archive.ubuntu.com/ubuntu/ trusty-updates multiverse" >> /etc/apt/source.list
-RUN echo "deb-src http://us.archive.ubuntu.com/ubuntu/ trusty-updates multiverse" >> /etc/apt/source.list
+# use aliyun mirror
+COPY apt/sources.list /etc/apt/sources.list
+
 # Enable videolan stable repository.
 RUN apt-get update && apt-get install -y software-properties-common
 RUN add-apt-repository ppa:videolan/stable-daily
@@ -35,7 +33,7 @@ RUN touch /var/log/auth.log
 # Download FreeSWITCH.
 WORKDIR /usr/src
 ENV GIT_SSL_NO_VERIFY=1
-RUN git clone https://freeswitch.org/stash/scm/fs/freeswitch.git -b v1.6.16
+RUN git clone https://github.do/https://github.com/signalwire/freeswitch.git --depth=1
 
 # Bootstrap the build.
 WORKDIR freeswitch
